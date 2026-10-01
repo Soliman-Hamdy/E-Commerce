@@ -208,12 +208,12 @@ export default function Footer() {
             <h3 className={headingClass}>Support</h3>
             <ul className={listClass}>
               <li>
-                <Link href="/" className={linkClass}>
+                <Link href="/support" onClick={scrollToTop}  className={linkClass}>
                   Contact Us
                 </Link>
               </li>
               <li>
-                <Link href="/" className={linkClass}>
+                <Link href="/support" onClick={scrollToTop} className={linkClass}>
                   Help Center
                 </Link>
               </li>

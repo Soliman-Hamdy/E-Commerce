@@ -8,20 +8,36 @@ import ShopCategoryHeader from "./ShopCategoryHeader";
 export default async function Shop({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string | string[] }>;
+  searchParams: Promise<{
+    category?: string | string[];
+    search?: string | string[];
+  }>;
 }) {
   const data = await getAllProducts();
-  const { category } = await searchParams;
+  const { category, search } = await searchParams;
   const selectedCategory = Array.isArray(category) ? category[0] : category;
+  const searchTerm = (Array.isArray(search) ? search[0] : search)
+    ?.trim()
+    .toLowerCase();
   const normalizeCategory = (value: string) =>
     value.toLowerCase().replace(/[^a-z0-9]/g, "");
-  const filteredData = selectedCategory
-    ? data.filter((product) =>
-        normalizeCategory(product.category.name).includes(
-          normalizeCategory(selectedCategory),
-        ),
-      )
-    : data;
+  const filteredData = data.filter((product) => {
+    const matchesCategory =
+      !selectedCategory ||
+      normalizeCategory(product.category.name).includes(
+        normalizeCategory(selectedCategory),
+      );
+    const matchesSearch =
+      !searchTerm ||
+      [
+        product.title,
+        product.description,
+        product.category?.name,
+        product.brand?.name,
+      ].some((value) => value?.toLowerCase().includes(searchTerm));
+
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <>

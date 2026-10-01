@@ -10,7 +10,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
   return (
     <>
       <div className=" my-2 ">
-        <div className=" border border-blue-200 rounded-lg shadow-md p-4">
+        <div className="transform-gpu rounded-lg border border-blue-200 p-4 shadow-md transition duration-200 ease-out hover:-translate-y-1.5 hover:shadow-lg motion-reduce:transition-none">
           {/* Discount Badge */}
           <div className="relative">
             <span className="absolute top-2 left-2 bg-orange-400 text-white text-xs font-semibold px-2 py-1 rounded-full">

@@ -20,11 +20,13 @@ import {
 import { Button } from "@base-ui/react";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 import { cartResponseType } from "@/src/api/types/cartType";
 import { getCart } from "@/src/api/actions/cartActions/getCart";
 import { getWishlist } from "@/src/api/actions/wishlistActions/getWishlist";
+import { Search } from "lucide-react";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -77,6 +79,7 @@ function getCategoryHref(value: string) {
 }
 
 export default function Navbar() {
+  const router = useRouter();
   const { data: sessionData, status } = useSession();
   const { data: cartData } = useQuery<cartResponseType>({
     queryKey: ["getCart"],
@@ -96,6 +99,13 @@ export default function Navbar() {
   function handleLogout() {
     signOut({ redirect: true, callbackUrl: "/login" });
   }
+  function handleSearch(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const searchTerm = String(new FormData(event.currentTarget).get("search") ?? "").trim();
+    router.push(
+      searchTerm ? `/shop?search=${encodeURIComponent(searchTerm)}` : "/shop",
+    );
+  }
   console.log(status);
 
   return (
@@ -109,10 +119,26 @@ export default function Navbar() {
         <h2 className="flex gap-2">
           <Image src={logo} alt="FreshCart" />
         </h2>
-        <Input
-          placeholder="Search for products,brands and more..."
-          className="w-1/3"
-        />
+        <form
+          role="search"
+          onSubmit={handleSearch}
+          className="relative mx-1 flex min-w-0 flex-1 items-center sm:mx-3 md:max-w-xl"
+        >
+          <Input
+            name="search"
+            type="search"
+            placeholder="Search for products, brands and more..."
+            aria-label="Search products, brands, and categories"
+            className="h-11 rounded-full border-slate-200 bg-white py-2 pl-5 pr-14 text-sm shadow-none focus-visible:border-green-500 focus-visible:ring-green-100"
+          />
+          <button
+            type="submit"
+            aria-label="Search"
+            className="absolute right-1 flex size-9 items-center justify-center rounded-full bg-green-600 text-white transition-colors hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+          >
+            <Search aria-hidden="true" className="size-5" />
+          </button>
+        </form>
         <NavigationMenuItem className="md:hidden">
           <NavigationMenuTrigger>
             <svg
