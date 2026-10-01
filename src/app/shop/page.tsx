@@ -26,7 +26,7 @@ export default async function Shop({
   return (
     <>
       <ShopCategoryHeader category={selectedCategory} />
-      <span className="text-2xl  my-2 font-bold text-green-600 border-l-4 border-l-green-500">
+      <span className="my-2 border-l-4 border-l-green-500 pl-3 text-2xl font-bold text-green-600">
         Showing {filteredData.length} Products
       </span>
 

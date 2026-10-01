@@ -24,6 +24,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 import { cartResponseType } from "@/src/api/types/cartType";
 import { getCart } from "@/src/api/actions/cartActions/getCart";
+import { getWishlist } from "@/src/api/actions/wishlistActions/getWishlist";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -76,19 +77,25 @@ function getCategoryHref(value: string) {
 }
 
 export default function Navbar() {
-  const { data: cartData, isLoading } = useQuery<cartResponseType>({
+  const { data: sessionData, status } = useSession();
+  const { data: cartData } = useQuery<cartResponseType>({
     queryKey: ["getCart"],
     queryFn: async () => {
       const response = await fetch("/api/cart");
       if (!response.ok) throw new Error("failed to fetch");
       return response.json();
     },
+    enabled: status === "authenticated",
+  });
+  const { data: wishlistData } = useQuery({
+    queryKey: ["getWishlist"],
+    queryFn: getWishlist,
+    enabled: status === "authenticated",
   });
   console.log("cart data ", cartData);
   function handleLogout() {
     signOut({ redirect: true, callbackUrl: "/login" });
   }
-  const { data: sessionData, status } = useSession();
   console.log(status);
 
   return (
@@ -179,10 +186,7 @@ export default function Navbar() {
               </ul>
             </NavigationMenuContent>
           </NavigationMenuItem>
-          <Link
-            className="font-semibold hover:text-green-500 "
-            href="/categories"
-          >
+          <Link className="font-semibold hover:text-green-500 " href="/support">
             <div className="flex items-center gap-2 border-r pr-2">
               <div className=" rounded-full bg-green-50 p-3 ">
                 <svg
@@ -215,9 +219,11 @@ export default function Navbar() {
                 href="/cart"
                 className="relative inline-flex items-center justify-center"
               >
-                <span className="absolute -top-2 -right-2 min-w-5 h-5 rounded-full bg-red-600 text-white text-[10px] font-semibold flex items-center justify-center px-1 leading-none shadow-sm">
-                  {cartData?.numOfCartItems}
-                </span>
+                {(cartData?.numOfCartItems ?? 0) > 0 && (
+                  <span className="absolute -top-2 -right-2 min-w-5 h-5 rounded-full bg-red-600 text-white text-[10px] font-semibold flex items-center justify-center px-1 leading-none shadow-sm">
+                    {cartData?.numOfCartItems}
+                  </span>
+                )}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -233,7 +239,15 @@ export default function Navbar() {
                   />
                 </svg>
               </Link>
-              <Link href="/wishlist">
+              <Link
+                href="/wishlist"
+                className="relative inline-flex items-center justify-center"
+              >
+                {(wishlistData?.length ?? 0) > 0 && (
+                  <span className="absolute -top-2 -right-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-semibold leading-none text-white shadow-sm">
+                    {wishlistData?.length}
+                  </span>
+                )}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -249,9 +263,10 @@ export default function Navbar() {
                   />
                 </svg>
               </Link>
-              <Button
+              <button
+                type="button"
                 onClick={handleLogout}
-                className="bg-green-600  py-2 px-3 text-white rounded-2xl flex items-center gap-1 shadow-2xl"
+                className="flex cursor-pointer items-center gap-1 rounded-2xl bg-green-600 px-3 py-2 text-white shadow-2xl"
               >
                 {" "}
                 <svg
@@ -269,7 +284,7 @@ export default function Navbar() {
                   />
                 </svg>
                 <span>Log out</span>
-              </Button>{" "}
+              </button>{" "}
             </>
           ) : (
             <Button className="bg-green-600 py-2 px-3 text-white rounded-2xl flex items-center gap-1 shadow-2xl">

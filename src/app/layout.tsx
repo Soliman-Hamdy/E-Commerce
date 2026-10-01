@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "./_component/Navbar/Navbar";
 import Footer from "./_component/Footer/Footer";
 import FirstNav from "./_component/FirstNav/FirstNav";
+import LastNav from "./_component/LastNav/LastNav";
+
 import { Weight } from "lucide-react";
 import { Toaster } from "@/components/ui/toast";
 import { SessionProvider } from "next-auth/react";
@@ -36,7 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 {children}
                 <Toaster />
               </div>
-
+              <LastNav />
               <Footer />
             </MyProvider>
           </ReduxProvider>

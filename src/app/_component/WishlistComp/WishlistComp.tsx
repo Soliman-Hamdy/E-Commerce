@@ -11,7 +11,7 @@ export default function WishlistComp() {
   const query = useQueryClient();
 
   const { data: wishlist, isLoading } = useQuery({
-    queryKey: ["wishlist"],
+    queryKey: ["getWishlist"],
     queryFn: () => getWishlist(),
   });
 
@@ -22,7 +22,7 @@ export default function WishlistComp() {
         type: "success",
         description: "product removed successfully",
       });
-      query.invalidateQueries({ queryKey: ["wishlist"] });
+      return query.invalidateQueries({ queryKey: ["getWishlist"] });
     },
     onError: () => {
       toast.add({

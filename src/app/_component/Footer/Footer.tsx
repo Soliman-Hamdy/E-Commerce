@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -18,6 +19,10 @@ const socialClass =
   "flex h-10 w-10 items-center justify-center rounded-full bg-slate-800 text-slate-300 transition-colors hover:bg-green-600 hover:text-white";
 
 export default function Footer() {
+  const scrollToTop = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   return (
     <footer className="bg-slate-900 text-slate-400">
       <div className="mx-auto max-w-7xl px-6 pt-12 pb-10">
@@ -166,12 +171,12 @@ export default function Footer() {
             <h3 className={headingClass}>Account</h3>
             <ul className={listClass}>
               <li>
-                <Link href="/account" className={linkClass}>
+                <Link href="/" className={linkClass} onClick={scrollToTop}>
                   My Account
                 </Link>
               </li>
               <li>
-                <Link href="/allorders" className={linkClass}>
+                <Link href="/" className={linkClass} onClick={scrollToTop}>
                   Order History
                 </Link>
               </li>

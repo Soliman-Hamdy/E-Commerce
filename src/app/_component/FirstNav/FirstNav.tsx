@@ -4,7 +4,7 @@ import React from "react";
 export default function FirstNav() {
   return (
     <>
-      <div className="md:flex justify-between items-center  hidden">
+      <div className="hidden w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 px-8 py-2 md:flex">
         <div className="leftSide flex gap-6 ">
           <span className="flex  gap-2 items-center">
             <svg

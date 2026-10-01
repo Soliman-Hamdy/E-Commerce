@@ -1,68 +1,71 @@
 "use client";
 import { toast } from "@/components/ui/toast";
-import { addToCart } from "@/src/api/actions/cartActions/addToCart";
 import { addToWishlist } from "@/src/api/actions/wishlistActions/addToWishlist";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { ReactNode } from "react";
-//call api to add product to cart => get token
+import { deleteWishlistItem } from "@/src/api/actions/wishlistActions/deleteWishlistItem";
+import { getWishlist } from "@/src/api/actions/wishlistActions/getWishlist";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Heart } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 export default function WishlistBtn({
   cls,
-  child,
   prodId,
 }: {
   cls: string;
-  child: ReactNode;
   prodId: string;
 }) {
   const query = useQueryClient();
+  const { status } = useSession();
+  const { data: wishlist } = useQuery({
+    queryKey: ["getWishlist"],
+    queryFn: getWishlist,
+    enabled: status === "authenticated",
+  });
+  const isSaved = wishlist?.some((product) => product._id === prodId) ?? false;
 
-  async function handleAddToWishlist() {
-    mutate(prodId);
-
-    // try {
-    //   const data = await addToCart(prodId);
-    //   if (data.message === "Product added successfully to your cart") {
-    //     toast.add({
-    //       type: "success",
-    //       description: data.message,
-    //     });
-    //   } else {
-    //     toast.add({
-    //       type: "error",
-    //       description: "Login First",
-    //     });
-    //   }
-    // } catch (error) {
-    //   toast.add({
-    //     type: "error",
-    //     description: "Login First",
-    //   });
-    // }
-  }
-  const { data, mutate } = useMutation({
-    mutationFn: addToWishlist,
+  const { mutate, isPending } = useMutation({
+    mutationFn: (productId: string) =>
+      isSaved ? deleteWishlistItem(productId) : addToWishlist(productId),
     onSuccess: () => {
       toast.add({
         type: "success",
-        description: "product added successfully",
+        description: isSaved
+          ? "Product removed from wishlist"
+          : "Product added to wishlist",
       });
-      query.invalidateQueries({ queryKey: ["getWishlist"] });
+      return query.invalidateQueries({ queryKey: ["getWishlist"] });
     },
     onError: () => {
       toast.add({
         type: "error",
-        description: "Login First",
+        description: "Could not update wishlist",
       });
     },
   });
-  console.log(data);
+
+  function handleToggleWishlist() {
+    if (status !== "authenticated") {
+      toast.add({ type: "error", description: "Login First" });
+      return;
+    }
+
+    mutate(prodId);
+  }
 
   return (
-    <>
-      <button onClick={handleAddToWishlist} className={cls}>
-        {child}
-      </button>
-    </>
+    <button
+      type="button"
+      onClick={handleToggleWishlist}
+      className={cls}
+      aria-label={isSaved ? "Remove from wishlist" : "Add to wishlist"}
+      aria-pressed={isSaved}
+      disabled={isPending}
+      title={isSaved ? "Remove from wishlist" : "Add to wishlist"}
+    >
+      <Heart
+        aria-hidden="true"
+        className={`size-4 transition-colors ${isSaved ? "fill-red-500 text-red-500" : "text-gray-600"}`}
+      />
+    </button>
   );
 }

@@ -7,7 +7,7 @@ export default async function FeaturedProducts() {
 
   return (
     <>
-      <h2 className="text-2xl my-2 font-bold text-green-600 border-l-4 border-l-black">
+      <h2 className="my-2 border-l-4 border-l-green-500 pl-3 text-2xl font-bold text-green-600">
         Featured Products
       </h2>
 

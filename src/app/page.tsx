@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import FeaturedProducts from "./_component/FeaturedProducts/FeaturedProducts";
+import OfferCards from "./_component/OfferCards/OfferCards";
 import Slider from "./_component/Slider/Slider";
 import img1 from "../assets/images/slider-image-1.jpeg";
 import img2 from "../assets/images/slider-image-2.jpeg";
@@ -29,6 +30,8 @@ export default function Home() {
       />
 
       <ShopCategory />
+      <OfferCards />
+
       <FeaturedProducts />
     </>
   );
