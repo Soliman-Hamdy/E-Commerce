@@ -26,7 +26,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${Exofont.className}  antialiased`}>
+    <html
+      lang="en"
+      className={`${Exofont.className} antialiased`}
+      suppressHydrationWarning
+    >
       <body className="">
         <Providers>
           <ReduxProvider>

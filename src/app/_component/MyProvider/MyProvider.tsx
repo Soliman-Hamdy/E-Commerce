@@ -1,5 +1,6 @@
 'use client'
 import { SessionProvider } from "next-auth/react";
+import { ThemeProvider } from "next-themes";
 import React from "react";
 
 export default function MyProvider({
@@ -8,11 +9,10 @@ export default function MyProvider({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <SessionProvider>
-        {/* app */}
         {children}
-        </SessionProvider>
-    </>
+      </SessionProvider>
+    </ThemeProvider>
   );
 }

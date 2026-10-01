@@ -26,7 +26,8 @@ import { useQuery } from "@tanstack/react-query";
 import { cartResponseType } from "@/src/api/types/cartType";
 import { getCart } from "@/src/api/actions/cartActions/getCart";
 import { getWishlist } from "@/src/api/actions/wishlistActions/getWishlist";
-import { Search } from "lucide-react";
+import { Moon, Search, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -80,6 +81,8 @@ function getCategoryHref(value: string) {
 
 export default function Navbar() {
   const router = useRouter();
+  const { resolvedTheme, setTheme } = useTheme();
+  const [themeReady, setThemeReady] = React.useState(false);
   const { data: sessionData, status } = useSession();
   const { data: cartData } = useQuery<cartResponseType>({
     queryKey: ["getCart"],
@@ -96,6 +99,7 @@ export default function Navbar() {
     enabled: status === "authenticated",
   });
   console.log("cart data ", cartData);
+  React.useEffect(() => setThemeReady(true), []);
   function handleLogout() {
     signOut({ redirect: true, callbackUrl: "/login" });
   }
@@ -139,6 +143,29 @@ export default function Navbar() {
             <Search aria-hidden="true" className="size-5" />
           </button>
         </form>
+        <button
+          type="button"
+          aria-label={
+            themeReady && resolvedTheme === "dark"
+              ? "Switch to light mode"
+              : "Switch to dark mode"
+          }
+          title={
+            themeReady && resolvedTheme === "dark"
+              ? "Switch to light mode"
+              : "Switch to dark mode"
+          }
+          onClick={() =>
+            setTheme(resolvedTheme === "dark" ? "light" : "dark")
+          }
+          className="flex size-10 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 dark:border-slate-700 dark:bg-slate-800 dark:text-amber-300 dark:hover:bg-slate-700"
+        >
+          {themeReady && resolvedTheme === "dark" ? (
+            <Sun aria-hidden="true" className="size-5" />
+          ) : (
+            <Moon aria-hidden="true" className="size-5" />
+          )}
+        </button>
         <NavigationMenuItem className="md:hidden">
           <NavigationMenuTrigger>
             <svg
