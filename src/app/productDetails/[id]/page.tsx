@@ -1,7 +1,6 @@
 import { getSingleProduct } from "@/src/api/services/productApi";
 import Image from "next/image";
 import React from "react";
-import Slider from "../../_component/Slider/Slider";
 import AddBtn from "../../_component/AddBtn/AddBtn";
 
 export default async function productDetails(props: {
@@ -28,24 +27,17 @@ export default async function productDetails(props: {
                 className="w-full h-auto rounded-lg shadow-md mb-4"
                 id="mainImage"
               />
-              <div className="flex gap-4 py-4 justify-center overflow-x-auto">
-                {/* {data.images.map((imgSrc) => {
-                  return (
-                    <Image
-                      width={100}
-                      height={70}
-                      src={imgSrc}
-                      alt="Product"
-                      className="w-full h-auto rounded-lg shadow-md mb-4"
-                      id="mainImage"
-                    /> */}
-                <Slider
-                  spaceBetween={2}
-                  slidesPerView={3}
-                  slides={data.images.map((image) => ({ image }))}
-                />
-                {/* //   );
-                // })} */}
+              <div className="grid w-full min-w-0 grid-cols-3 gap-3 py-4">
+                {data.images.map((image, index) => (
+                  <Image
+                    key={`${image}-${index}`}
+                    width={100}
+                    height={70}
+                    src={image}
+                    alt={`${data.title} image ${index + 1}`}
+                    className="h-20 w-full rounded-lg object-cover shadow-sm"
+                  />
+                ))}
               </div>
             </div>
             {/* Product Details */}
