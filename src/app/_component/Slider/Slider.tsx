@@ -64,15 +64,15 @@ export default function Slider({
                   aria-hidden="true"
                   className="absolute inset-0 bg-green-600/75"
                 />
-                <div className="absolute inset-0 z-10 flex items-center px-6 sm:px-10 lg:px-16">
-                  <div className="max-w-lg text-white">
+                <div className="absolute inset-0 z-10 flex items-center justify-center px-6 sm:justify-start sm:px-10 lg:px-16">
+                  <div className="max-w-lg text-center text-white sm:text-left">
                     <h2 className="text-3xl font-bold leading-tight sm:text-4xl">
                       {slide.title}
                     </h2>
                     <p className="mt-4 text-base font-medium sm:text-lg">
                       <span>{slide.description}</span>
                     </p>
-                    <div className="mt-5 flex flex-wrap gap-3">
+                    <div className="mt-5 flex flex-wrap justify-center gap-3 sm:justify-start">
                       <Link
                         href={slide.primaryAction.href}
                         className="inline-flex min-h-11 items-center justify-center rounded-md bg-white px-6 py-3 text-sm font-semibold text-green-700 transition-colors hover:bg-green-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
