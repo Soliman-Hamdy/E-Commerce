@@ -28,10 +28,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${Exofont.className} antialiased`}
+      className={`${Exofont.className} antialiased overflow-x-clip`}
       suppressHydrationWarning
     >
-      <body className="">
+      <body className="overflow-x-clip">
         <Providers>
           <ReduxProvider>
             <MyProvider>
