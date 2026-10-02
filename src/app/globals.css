@@ -181,6 +181,22 @@
   }
 }
 
+@media (max-width: 639px) {
+
+  .hero-slider .swiper-button-next,
+  .hero-slider .swiper-button-prev {
+    width: 1.75rem;
+    height: 1.75rem;
+    color: white;
+  }
+
+  .hero-slider .swiper-button-next::after,
+  .hero-slider .swiper-button-prev::after {
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+}
+
 @layer utilities {
   .dark .bg-white {
     background-color: var(--card);

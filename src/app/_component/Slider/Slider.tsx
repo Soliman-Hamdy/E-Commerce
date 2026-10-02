@@ -33,6 +33,7 @@ export default function Slider({
   return (
     <div className="w-screen relative left-1/2 right-1/2 mx-[-50vw]">
       <Swiper
+        className="hero-slider"
         loop={true}
         modules={[Navigation, Pagination]}
         navigation

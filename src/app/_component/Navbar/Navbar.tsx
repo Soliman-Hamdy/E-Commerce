@@ -26,7 +26,7 @@ import { useQuery } from "@tanstack/react-query";
 import { cartResponseType } from "@/src/api/types/cartType";
 import { getCart } from "@/src/api/actions/cartActions/getCart";
 import { getWishlist } from "@/src/api/actions/wishlistActions/getWishlist";
-import { Moon, Search, Sun } from "lucide-react";
+import { ChevronDown, Moon, Search, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
 const components: { title: string; href: string; description: string }[] = [
@@ -185,27 +185,33 @@ export default function Navbar() {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="w-96">
-              <ListItem href="/" title="Home">
-                <Link href="/">Home</Link>
-              </ListItem>
-              <ListItem href="/brands" title="Brands">
-                <Link href="/brands">Brands</Link>
-              </ListItem>
-              <ListItem href="/shop" title="Shop">
-                <Link href="/shop">Shop</Link>
-              </ListItem>
-              <li className="px-2 pt-2 text-sm font-semibold">Categories</li>
-              {categoryLinks.map((category) => (
-                <li key={category.label}>
-                  <NavigationMenuLink
-                    render={
-                      <Link href={getCategoryHref(category.value)}>
-                        {category.label}
-                      </Link>
-                    }
-                  />
-                </li>
-              ))}
+              <ListItem href="/" title="Home" />
+              <ListItem href="/brands" title="Brands" />
+              <ListItem href="/shop" title="Shop" />
+              <li className="px-2 pt-1">
+                <details className="group">
+                  <summary className="flex cursor-pointer list-none items-center justify-between rounded-md px-2 py-2 text-sm font-semibold hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
+                    Categories
+                    <ChevronDown
+                      aria-hidden="true"
+                      className="size-4 transition-transform group-open:rotate-180"
+                    />
+                  </summary>
+                  <ul className="pl-2">
+                    {categoryLinks.map((category) => (
+                      <li key={category.label}>
+                        <NavigationMenuLink
+                          render={
+                            <Link href={getCategoryHref(category.value)}>
+                              {category.label}
+                            </Link>
+                          }
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              </li>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
@@ -369,21 +375,15 @@ export default function Navbar() {
 
 function ListItem({
   title,
-  children,
   href,
   ...props
-}: React.ComponentPropsWithoutRef<"li"> & { href: string }) {
+}: React.ComponentPropsWithoutRef<"li"> & { href: string; title: string }) {
   return (
     <li {...props}>
       <NavigationMenuLink
         render={
           <Link href={href}>
-            <div className="flex flex-col gap-1 text-sm">
-              <div className="leading-none font-medium">{title}</div>
-              <div className="line-clamp-2 text-muted-foreground">
-                {children}
-              </div>
-            </div>
+            <div className="text-sm leading-none font-medium">{title}</div>
           </Link>
         }
       />
