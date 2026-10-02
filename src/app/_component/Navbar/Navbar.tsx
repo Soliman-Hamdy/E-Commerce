@@ -105,7 +105,9 @@ export default function Navbar() {
   }
   function handleSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const searchTerm = String(new FormData(event.currentTarget).get("search") ?? "").trim();
+    const searchTerm = String(
+      new FormData(event.currentTarget).get("search") ?? "",
+    ).trim();
     router.push(
       searchTerm ? `/shop?search=${encodeURIComponent(searchTerm)}` : "/shop",
     );
@@ -155,9 +157,7 @@ export default function Navbar() {
               ? "Switch to light mode"
               : "Switch to dark mode"
           }
-          onClick={() =>
-            setTheme(resolvedTheme === "dark" ? "light" : "dark")
-          }
+          onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
           className="flex size-10 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 dark:border-slate-700 dark:bg-slate-800 dark:text-amber-300 dark:hover:bg-slate-700"
         >
           {themeReady && resolvedTheme === "dark" ? (

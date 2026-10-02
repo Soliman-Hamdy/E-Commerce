@@ -42,7 +42,7 @@ export default async function productDetails(props: {
                 <Slider
                   spaceBetween={2}
                   slidesPerView={3}
-                  pageList={data.images}
+                  slides={data.images.map((image) => ({ image }))}
                 />
                 {/* //   );
                 // })} */}
